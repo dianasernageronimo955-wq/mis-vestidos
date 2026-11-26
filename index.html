@@ -2,111 +2,335 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diana Boutique - Vestidos de Gala</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-        body {font-family: Arial, sans-serif; margin:0; padding:0;}
-        header {background:#333; color:#fff; padding:10px 20px; display:flex; justify-content:space-between; align-items:center;}
-        nav ul {list-style:none; margin:0; padding:0; display:flex; gap:15px;}
-        nav a {color:#fff; text-decoration:none;}
-        .lang-selector button {background:#555; color:#fff; border:none; padding:5px 10px; margin-left:5px; cursor:pointer;}
-        .gallery {display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px; padding:20px;}
-        .gallery img {width:100%; height:auto; border-radius:8px;}
-        .hidden {display:none;}
-    </style>
-    <script>
-        const texts = {
-            es: {
-                inicio: "Inicio",
-                nosotros: "Nosotros",
-                servicios: "Servicios",
-                proyectos: "Proyectos",
-                galeria: "Galerías de fotos",
-                contacto: "Contáctanos",
-                title: "Diana Boutique - Vestidos de Gala"
-            },
-            en: {
-                inicio: "Home",
-                nosotros: "About Us",
-                servicios: "Services",
-                proyectos: "Projects",
-                galeria: "Photo Gallery",
-                contacto: "Contact",
-                title: "Diana Boutique - Evening Dresses"
-            }
-        };
-        function setLanguage(lang) {
-            document.documentElement.lang = lang;
-            document.title = texts[lang].title;
-            document.getElementById('menu-inicio').textContent = texts[lang].inicio;
-            document.getElementById('menu-nosotros').textContent = texts[lang].nosotros;
-            document.getElementById('menu-servicios').textContent = texts[lang].servicios;
-            document.getElementById('menu-proyectos').textContent = texts[lang].proyectos;
-            document.getElementById('menu-galeria').textContent = texts[lang].galeria;
-            document.getElementById('menu-contacto').textContent = texts[lang].contacto;
+        :root {
+            --dark: #1c1420;
+            --dark2: #2a1f2e;
+            --gold: #d4af7a;
+            --gold-light: #f0dcc0;
+            --text: #f7f1ec;
+            --muted: #cbbcc4;
         }
-    </script>
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        header {
+            background: rgba(28, 20, 32, 0.97);
+            color: #fff;
+            padding: 14px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(212, 175, 122, 0.35);
+        }
+        .brand {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: var(--gold); }
+        .lang-selector { display: flex; gap: 6px; }
+        .lang-selector button {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--gold);
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .lang-selector button.active,
+        .lang-selector button:hover {
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: bold;
+        }
+        section { padding: 50px 24px; max-width: 1100px; margin: 0 auto; }
+        section h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            color: var(--gold);
+            font-size: 2rem;
+            margin-top: 0;
+            border-bottom: 1px solid rgba(212, 175, 122, 0.3);
+            padding-bottom: 10px;
+        }
+        #inicio {
+            text-align: center;
+            max-width: none;
+            padding: 70px 24px;
+            background: linear-gradient(rgba(28,20,32,0.78), rgba(28,20,32,0.92)),
+                        url('https://images.unsplash.com/photo-1593804497748-06549d718c10?w=1600&q=80&auto=format&fit=crop') center/cover;
+        }
+        #inicio h2 { border: none; font-size: 2.8rem; }
+        #inicio p { max-width: 700px; margin: 0 auto; font-size: 1.15rem; }
+        .btn {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 12px 28px;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .card {
+            background: var(--dark2);
+            border: 1px solid rgba(212, 175, 122, 0.2);
+            border-radius: 10px;
+            padding: 24px;
+        }
+        .card h3 { color: var(--gold-light); margin-top: 0; }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        .gallery figure {
+            margin: 0;
+            background: var(--dark2);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 122, 0.2);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .gallery figure:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(212, 175, 122, 0.25);
+        }
+        .gallery img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+        }
+        .gallery figcaption {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        footer {
+            background: #120d16;
+            color: var(--muted);
+            text-align: center;
+            padding: 22px;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(212, 175, 122, 0.25);
+        }
+        a { color: var(--gold-light); }
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            cursor: pointer;
+        }
+        #lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(212,175,122,0.4);
+        }
+        @media (max-width: 700px) {
+            header { justify-content: center; text-align: center; }
+            nav ul { justify-content: center; gap: 12px; }
+            .gallery img { height: 240px; }
+        }
+    </style>
 </head>
 <body>
 <header>
-    <h1>Diana Boutique</h1>
+    <h1 class="brand">Diana Boutique</h1>
     <nav>
         <ul>
-            <li><a href="#inicio" id="menu-inicio">Inicio</a></li>
-            <li><a href="#nosotros" id="menu-nosotros">Nosotros</a></li>
-            <li><a href="#servicios" id="menu-servicios">Servicios</a></li>
-            <li><a href="#proyectos" id="menu-proyectos">Proyectos</a></li>
-            <li><a href="#galeria" id="menu-galeria">Galerías de fotos</a></li>
-            <li><a href="#contacto" id="menu-contacto">Contáctanos</a></li>
+            <li><a href="#inicio" data-es="Inicio" data-en="Home">Inicio</a></li>
+            <li><a href="#nosotros" data-es="Nosotros" data-en="About Us">Nosotros</a></li>
+            <li><a href="#servicios" data-es="Servicios" data-en="Services">Servicios</a></li>
+            <li><a href="#proyectos" data-es="Proyectos" data-en="Projects">Proyectos</a></li>
+            <li><a href="#galeria" data-es="Galerías de fotos" data-en="Photo Gallery">Galerías de fotos</a></li>
+            <li><a href="#contacto" data-es="Contáctanos" data-en="Contact Us">Contáctanos</a></li>
         </ul>
     </nav>
-    <div class="lang-selector">
-        <button onclick="setLanguage('es')">ES</button>
-        <button onclick="setLanguage('en')">EN</button>
+    <div class="lang-selector" aria-label="Idioma / Language">
+        <button type="button" class="active" onclick="setLanguage('es')" aria-label="Español">ES</button>
+        <button type="button" onclick="setLanguage('en')" aria-label="English">EN</button>
     </div>
 </header>
+
 <main>
     <section id="inicio">
-        <h2 id="title-inicio">Inicio</h2>
-        <p id="text-inicio">Bienvenido a Diana Boutique. Explora nuestra colección de vestidos de gala.</p>
+        <h2 data-es="Vestidos de Gala" data-en="Evening Dresses">Vestidos de Gala</h2>
+        <p data-es="Bienvenido a Diana Boutique. Descubre nuestra colección de vestidos de gala elegantes, diseñados para que brilles en cada ocasión especial."
+           data-en="Welcome to Diana Boutique. Discover our collection of elegant evening gowns, designed to make you shine at every special occasion.">
+           Bienvenido a Diana Boutique. Descubre nuestra colección de vestidos de gala elegantes, diseñados para que brilles en cada ocasión especial.
+        </p>
+        <a href="#galeria" class="btn" data-es="Ver la colección" data-en="View the collection">Ver la colección</a>
     </section>
+
     <section id="nosotros">
-        <h2 id="title-nosotros">Nosotros</h2>
-        <p id="text-nosotros">Somos expertos en moda elegante y personalizada.</p>
+        <h2 data-es="Nosotros" data-en="About Us">Nosotros</h2>
+        <p data-es="Somos especialistas en moda elegante y personalizada. En Diana Boutique combinamos la tradición de la costura artesanal con las tendencias actuales para crear piezas únicas que realzan tu estilo y tu personalidad."
+           data-en="We are specialists in elegant, personalized fashion. At Diana Boutique we combine the tradition of handmade tailoring with current trends to create unique pieces that enhance your style and personality.">
+           Somos especialistas en moda elegante y personalizada. En Diana Boutique combinamos la tradición de la costura artesanal con las tendencias actuales para crear piezas únicas que realzan tu estilo y tu personalidad.
+        </p>
     </section>
+
     <section id="servicios">
-        <h2 id="title-servicios">Servicios</h2>
-        <p id="text-servicios">Diseño a medida, asesoría de estilo y más.</p>
-    </section>
-    <section id="proyectos">
-        <h2 id="title-proyectos">Proyectos</h2>
-        <p id="text-proyectos">Mira algunos de nuestros trabajos recientes.</p>
-    </section>
-    <section id="galeria">
-        <h2 id="title-galeria">Galerías de fotos</h2>
-        <div class="gallery" id="gallery">
-            <!-- Sample dresses -->
-            <img src="https://via.placeholder.com/300x400?text=Vestido+1" alt="Vestido 1">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+2" alt="Vestido 2">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+3" alt="Vestido 3">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+4" alt="Vestido 4">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+5" alt="Vestido 5">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+6" alt="Vestido 6">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+7" alt="Vestido 7">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+8" alt="Vestido 8">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+9" alt="Vestido 9">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+10" alt="Vestido 10">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+11" alt="Vestido 11">
-            <img src="https://via.placeholder.com/300x400?text=Vestido+12" alt="Vestido 12">
+        <h2 data-es="Servicios" data-en="Services">Servicios</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3 data-es="Diseño a medida" data-en="Custom design">Diseño a medida</h3>
+                <p data-es="Creamos vestidos exclusivos adaptados a tus medidas, gustos y al evento que asistirás."
+                   data-en="We create exclusive dresses tailored to your measurements, taste and the event you will attend.">
+                   Creamos vestidos exclusivos adaptados a tus medidas, gustos y al evento que asistirás.
+                </p>
+            </div>
+            <div class="card">
+                <h3 data-es="Asesoría de estilo" data-en="Style consulting">Asesoría de estilo</h3>
+                <p data-es="Te ayudamos a elegir el vestido, los accesorios y los colores que mejor favorecen tu imagen."
+                   data-en="We help you choose the dress, accessories and colors that best flatter your image.">
+                   Te ayudamos a elegir el vestido, los accesorios y los colores que mejor favorecen tu imagen.
+                </p>
+            </div>
+            <div class="card">
+                <h3 data-es="Ajustes y reparaciones" data-en="Fittings and alterations">Ajustes y reparaciones</h3>
+                <p data-es="Adaptamos y ajustamos cada prenda para que el ajuste sea perfecto el día del evento."
+                   data-en="We adapt and adjust each garment so the fit is perfect on the day of the event.">
+                   Adaptamos y ajustamos cada prenda para que el ajuste sea perfecto el día del evento.
+                </p>
+            </div>
+            <div class="card">
+                <h3 data-es="Alquiler de vestidos" data-en="Dress rental">Alquiler de vestidos</h3>
+                <p data-es="Disponemos de una selección de vestidos de gala para alquiler con entrega puntual."
+                   data-en="We offer a selection of evening gowns for rent with on-time delivery.">
+                   Disponemos de una selección de vestidos de gala para alquiler con entrega puntual.
+                </p>
+            </div>
         </div>
     </section>
+
+    <section id="proyectos">
+        <h2 data-es="Proyectos" data-en="Projects">Proyectos</h2>
+        <p data-es="Cada vestido es un proyecto único. Aquí tienes algunos de nuestros trabajos recientes: colecciones de temporada, vestidos para galas, graduaciones y eventos corporativos."
+           data-en="Every dress is a unique project. Here are some of our recent works: seasonal collections, gowns for galas, graduations and corporate events.">
+           Cada vestido es un proyecto único. Aquí tienes algunos de nuestros trabajos recientes: colecciones de temporada, vestidos para galas, graduaciones y eventos corporativos.
+        </p>
+    </section>
+
+    <section id="galeria">
+        <h2 data-es="Galerías de fotos" data-en="Photo Gallery">Galerías de fotos</h2>
+        <p data-es="Explora nuestra galería de vestidos de gala reales. Haz clic en cualquier imagen para ampliarla."
+           data-en="Explore our gallery of real evening gowns. Click any image to enlarge it.">
+           Explora nuestra galería de vestidos de gala reales. Haz clic en cualquier imagen para ampliarla.
+        </p>
+        <div class="gallery" id="gallery">
+            <figure><img src="https://images.unsplash.com/photo-1765870973762-8652782b67ac?w=700&q=80&auto=format&fit=crop" alt="Vestido de gala rojo con mangas abullonadas" data-es-alt="Vestido de gala rojo con mangas abullonadas" data-en-alt="Red evening gown with ruffled sleeves"><figcaption data-es="Vestido rojo de gala" data-en="Red evening gown">Vestido rojo de gala</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1788756616372-915b4ddcae81?w=700&q=80&auto=format&fit=crop" alt="Vestido negro brillante" data-es-alt="Vestido negro brillante" data-en-alt="Black glittery evening dress"><figcaption data-es="Vestido negro brillante" data-en="Black glittery dress">Vestido negro brillante</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1765871421597-32d5eaecda42?w=700&q=80&auto=format&fit=crop" alt="Vestido verde esmeralda brillante" data-es-alt="Vestido verde esmeralda brillante" data-en-alt="Sparkling emerald green gown"><figcaption data-es="Vestido verde esmeralda" data-en="Emerald green gown">Vestido verde esmeralda</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1788756616332-afe4993779ed?w=700&q=80&auto=format&fit=crop" alt="Vestido negro con lentejuelas" data-es-alt="Vestido negro con lentejuelas" data-en-alt="Black sequined gown"><figcaption data-es="Vestido con lentejuelas" data-en="Sequined gown">Vestido con lentejuelas</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1765871421201-e06df489fb52?w=700&q=80&auto=format&fit=crop" alt="Vestido azul brillante de noche" data-es-alt="Vestido azul brillante de noche" data-en-alt="Shimmering blue evening gown"><figcaption data-es="Vestido azul de noche" data-en="Blue evening gown">Vestido azul de noche</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1593804497748-06549d718c10?w=700&q=80&auto=format&fit=crop" alt="Vestido rosa de gala" data-es-alt="Vestido rosa de gala" data-en-alt="Pink gala dress"><figcaption data-es="Vestido rosa de gala" data-en="Pink gala dress">Vestido rosa de gala</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1682559963839-5266295fce8d?w=700&q=80&auto=format&fit=crop" alt="Vestido negro de fiesta con abalorios" data-es-alt="Vestido negro de fiesta con abalorios" data-en-alt="Black beaded ball gown"><figcaption data-es="Vestido negro de fiesta" data-en="Black ball gown">Vestido negro de fiesta</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1721069118957-fad5829e2658?w=700&q=80&auto=format&fit=crop" alt="Vestido azul de baile con tiara" data-es-alt="Vestido azul de baile con tiara" data-en-alt="Blue ball gown with tiara"><figcaption data-es="Vestido de baile con tiara" data-en="Ball gown with tiara">Vestido de baile con tiara</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1511556820780-d912e42b4980?w=700&q=80&auto=format&fit=crop" alt="Vestido elegante de noche" data-es-alt="Vestido elegante de noche" data-en-alt="Elegant evening dress"><figcaption data-es="Vestido elegante" data-en="Elegant dress">Vestido elegante</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1644466315919-0cd84f64542b?w=700&q=80&auto=format&fit=crop" alt="Vestido de gala sofisticado" data-es-alt="Vestido de gala sofisticado" data-en-alt="Sophisticated evening gown"><figcaption data-es="Vestido sofisticado" data-en="Sophisticated gown">Vestido sofisticado</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1792333355104-6891e7739172?w=700&q=80&auto=format&fit=crop" alt="Vestido burdeos elegante" data-es-alt="Vestido burdeos elegante" data-en-alt="Elegant burgundy dress"><figcaption data-es="Vestido burdeos" data-en="Burgundy dress">Vestido burdeos</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1791343332157-f067f51e02c0?w=700&q=80&auto=format&fit=crop" alt="Vestido blanco satinado" data-es-alt="Vestido blanco satinado" data-en-alt="White satin dress"><figcaption data-es="Vestido blanco satinado" data-en="White satin dress">Vestido blanco satinado</figcaption></figure>
+        </div>
+    </section>
+
     <section id="contacto">
-        <h2 id="title-contacto">Contáctanos</h2>
-        <p id="text-contacto">Envíanos un correo a <a href="mailto:info@dianaboutique.com">info@dianaboutique.com</a>.</p>
+        <h2 data-es="Contáctanos" data-en="Contact Us">Contáctanos</h2>
+        <p data-es="¿Tienes un evento especial en mente? Escríbenos y te ayudaremos a encontrar o crear el vestido perfecto."
+           data-en="Do you have a special event in mind? Write to us and we will help you find or create the perfect dress.">
+           ¿Tienes un evento especial en mente? Escríbenos y te ayudaremos a encontrar o crear el vestido perfecto.
+        </p>
+        <p><strong>Email:</strong> <a href="mailto:info@dianaboutique.com">info@dianaboutique.com</a></p>
     </section>
 </main>
-<footer style="background:#333;color:#fff;text-align:center;padding:10px;">
-    © 2026 Diana Boutique. Todos los derechos reservados.
+
+<footer>
+    <span data-es="© 2026 Diana Boutique. Todos los derechos reservados." data-en="© 2026 Diana Boutique. All rights reserved.">© 2026 Diana Boutique. Todos los derechos reservados.</span>
 </footer>
+
+<div id="lightbox" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+    function setLanguage(lang) {
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'Diana Boutique - Evening Dresses'
+            : 'Diana Boutique - Vestidos de Gala';
+
+        // Translate all elements carrying data-es / data-en
+        document.querySelectorAll('[data-es]').forEach(function (el) {
+            el.textContent = lang === 'en' ? el.dataset.en : el.dataset.es;
+        });
+        // Translate image alternative texts
+        document.querySelectorAll('[data-es-alt]').forEach(function (el) {
+            el.alt = lang === 'en' ? el.dataset.enAlt : el.dataset.esAlt;
+        });
+        // Highlight the active language button
+        document.querySelectorAll('.lang-selector button').forEach(function (btn) {
+            btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+        });
+    }
+
+    // Gallery lightbox
+    document.querySelectorAll('.gallery img').forEach(function (img) {
+        img.addEventListener('click', function () {
+            var box = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = this.src.replace('w=700', 'w=1400');
+            document.getElementById('lightbox-img').alt = this.alt;
+            box.style.display = 'flex';
+        });
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') document.getElementById('lightbox').style.display = 'none';
+    });
+
+    // Respect the browser language on first load (optional)
+    // setLanguage(navigator.language.toLowerCase().startsWith('en') ? 'en' : 'es');
+</script>
 </body>
 </html>
