@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diana Boutique - Vestidos de Gala</title>
+    <style>
+        :root {
+            --dark: #1c1420;
+            --dark2: #2a1f2e;
+            --gold: #d4af7a;
+            --gold-light: #f0dcc0;
+            --text: #f7f1ec;
+            --muted: #cbbcc4;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        header {
+            background: rgba(28, 20, 32, 0.97);
+            color: #fff;
+            padding: 14px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(212, 175, 122, 0.35);
+        }
+        .brand {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: var(--gold); }
+        .lang-selector { display: flex; gap: 6px; }
+        .lang-selector button {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--gold);
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .lang-selector button.active,
+        .lang-selector button:hover {
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: bold;
+        }
+        section { padding: 50px 24px; max-width: 1100px; margin: 0 auto; }
+        section h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            color: var(--gold);
+            font-size: 2rem;
+            margin-top: 0;
+            border-bottom: 1px solid rgba(212, 175, 122, 0.3);
+            padding-bottom: 10px;
+        }
+        #inicio {
+            text-align: center;
+            max-width: none;
+            padding: 70px 24px;
+            background: linear-gradient(rgba(28,20,32,0.78), rgba(28,20,32,0.92)),
+                        url('https://images.unsplash.com/photo-1593804497748-06549d718c10?w=1600&q=80&auto=format&fit=crop') center/cover;
+        }
+        #inicio h2 { border: none; font-size: 2.8rem; }
+        #inicio p { max-width: 700px; margin: 0 auto; font-size: 1.15rem; }
+        .btn {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 12px 28px;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .card {
+            background: var(--dark2);
+            border: 1px solid rgba(212, 175, 122, 0.2);
+            border-radius: 10px;
+            padding: 24px;
+        }
+        .card h3 { color: var(--gold-light); margin-top: 0; }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        .gallery figure {
+            margin: 0;
+            background: var(--dark2);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 122, 0.2);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .gallery figure:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(212, 175, 122, 0.25);
+        }
+        .gallery img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+        }
+        .gallery figcaption {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        footer {
+            background: #120d16;
+            color: var(--muted);
+            text-align: center;
+            padding: 22px;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(212, 175, 122, 0.25);
+        }
+        a { color: var(--gold-light); }
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            cursor: pointer;
+        }
+        #lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(212,175,122,0.4);
+        }
+        @media (max-width: 700px) {
+            header { justify-content: center; text-align: center; }
+            nav ul { justify-content: center; gap: 12px; }
+            .gallery img { height: 240px; }
+        }
+        /* WhatsApp */
+        .whatsapp-icon { width: 32px; height: 32px; fill: #fff; flex-shrink: 0; }
+        .whatsapp-float {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 58px;
+            height: 58px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+            z-index: 150;
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover { transform: scale(1.08); }
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: #25D366;
+            color: #fff;
+            text-decoration: none;
+            padding: 11px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .btn-whatsapp:hover { transform: translateY(-2px); color: #fff; }
+        .btn-whatsapp .whatsapp-icon { width: 20px; height: 20px; }
+        .contact-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 18px; }
+        /* Chatbot */
+        .chat-toggle {
+            position: fixed;
+            right: 22px;
+            bottom: 92px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gold);
+            color: var(--dark);
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+            z-index: 151;
+        }
+        .chat-panel {
+            position: fixed;
+            right: 22px;
+            bottom: 160px;
+            width: min(340px, calc(100vw - 44px));
+            background: #fff;
+            color: #222;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+            border: 1px solid var(--gold);
+            z-index: 152;
+            display: none;
+            overflow: hidden;
+        }
+        .chat-panel.open { display: flex; flex-direction: column; }
+        .chat-header {
+            background: var(--dark2);
+            padding: 11px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header strong { color: var(--gold); font-size: 1rem; }
+        .chat-header small { color: var(--muted); display: block; font-size: 0.72rem; }
+        .chat-close { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; line-height: 1; }
+        .chat-messages {
+            height: 250px;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.88rem;
+        }
+        .chat-msg { max-width: 86%; padding: 9px 12px; border-radius: 12px; line-height: 1.4; white-space: pre-wrap; }
+        .chat-msg.bot { background: #f1e8dc; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-msg.user { background: var(--gold); color: var(--dark); align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-quick { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 10px; }
+        .chat-quick button {
+            background: #f1e8dc;
+            border: 1px solid var(--gold);
+            color: #5a4423;
+            border-radius: 16px;
+            padding: 5px 10px;
+            font-size: 0.76rem;
+            cursor: pointer;
+        }
+        .chat-quick button:hover { background: var(--gold); }
+        .chat-form { display: flex; border-top: 1px solid #ddd; }
+        .chat-form input { flex: 1; border: none; padding: 12px; font-size: 0.88rem; outline: none; min-width: 0; }
+        .chat-form button { border: none; background: var(--gold); color: var(--dark); padding: 0 16px; font-weight: bold; cursor: pointer; }
+        @media (max-width: 700px) {
+            .chat-panel { bottom: 155px; }
+            .chat-messages { height: 210px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 class="brand">Diana Boutique</h1>
+    <nav>
+        <ul>
+            <li><a href="#inicio" data-es="Inicio" data-en="Home">Inicio</a></li>
+            <li><a href="#nosotros" data-es="Nosotros" data-en="About Us">Nosotros</a></li>
+            <li><a href="#servicios" data-es="Servicios" data-en="Services">Servicios</a></li>
+            <li><a href="#proyectos" data-es="Proyectos" data-en="Projects">Proyectos</a></li>
+            <li><a href="#galeria" data-es="Galerías de fotos" data-en="Photo Gallery">Galerías de fotos</a></li>
+            <li><a href="#contacto" data-es="Contáctanos" data-en="Contact Us">Contáctanos</a></li>
+        </ul>
+    </nav>
+    <div class="lang-selector" aria-label="Idioma / Language">
+        <button type="button" class="active" onclick="setLanguage('es')" aria-label="Español">ES</button>
+        <button type="button" onclick="setLanguage('en')" aria-label="English">EN</button>
+    </div>
+</header>
+
+<main>
+    <section id="inicio">
+        <h2 data-es="Vestidos de Gala" data-en="Evening Dresses">Vestidos de Gala</h2>
+        <p data-es="Bienvenido a Diana Boutique. Descubre nuestra colección de vestidos de gala elegantes, diseñados para que brilles en cada ocasión especial."
+           data-en="Welcome to Diana Boutique. Discover our collection of elegant evening gowns, designed to make you shine at every special occasion.">
+           Bienvenido a Diana Boutique. Descubre nuestra colección de vestidos de gala elegantes, diseñados para que brilles en cada ocasión especial.
+        </p>
+        <a href="#galeria" class="btn" data-es="Ver la colección" data-en="View the collection">Ver la colección</a>
+    </section>
+
+    <section id="nosotros">
+        <h2 data-es="Nosotros" data-en="About Us">Nosotros</h2>
+        <p data-es="Somos especialistas en moda elegante y personalizada. En Diana Boutique combinamos la tradición de la costura artesanal con las tendencias actuales para crear piezas únicas que realzan tu estilo y tu personalidad."
+           data-en="We are specialists in elegant, personalized fashion. At Diana Boutique we combine the tradition of handmade tailoring with current trends to create unique pieces that enhance your style and personality.">
+           Somos especialistas en moda elegante y personalizada. En Diana Boutique combinamos la tradición de la costura artesanal con las tendencias actuales para crear piezas únicas que realzan tu estilo y tu personalidad.
+        </p>
+    </section>
+
+    <section id="servicios">
+        <h2 data-es="Servicios" data-en="Services">Servicios</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3 data-es="Diseño a medida" data-en="Custom design">Diseño a medida</h3>
+                <p data-es="Creamos vestidos exclusivos adaptados a tus medidas, gustos y al evento que asistirás."
+                   data-en="We create exclusive dresses tailored to your measurements, taste and the event you will attend.">
+                   Creamos vestidos exclusivos adaptados a tus medidas, gustos y al evento que asistirás.
+                </p>
+            </div>
+            <div class="card">
+                <h3 data-es="Asesoría de estilo" data-en="Style consulting">Asesoría de estilo</h3>
+                <p data-es="Te ayudamos a elegir el vestido, los accesorios y los colores que mejor favorecen tu imagen."
+                   data-en="We help you choose the dress, accessories and colors that best flatter your image.">
+                   Te ayudamos a elegir el vestido, los accesorios y los colores que mejor favorecen tu imagen.
+                </p>
+            </div>
+            <div class="card">
+                <h3 data-es="Ajustes y reparaciones" data-en="Fittings and alterations">Ajustes y reparaciones</h3>
+                <p data-es="Adaptamos y ajustamos cada prenda para que el ajuste sea perfecto el día del evento."
+                   data-en="We adapt and adjust each garment so the fit is perfect on the day of the event.">
+                   Adaptamos y ajustamos cada prenda para que el ajuste sea perfecto el día del evento.
+                </p>
+            </div>
+            <div class="card">
+                <h3 data-es="Alquiler de vestidos" data-en="Dress rental">Alquiler de vestidos</h3>
+                <p data-es="Disponemos de una selección de vestidos de gala para alquiler con entrega puntual."
+                   data-en="We offer a selection of evening gowns for rent with on-time delivery.">
+                   Disponemos de una selección de vestidos de gala para alquiler con entrega puntual.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="proyectos">
+        <h2 data-es="Proyectos" data-en="Projects">Proyectos</h2>
+        <p data-es="Cada vestido es un proyecto único. Aquí tienes algunos de nuestros trabajos recientes: colecciones de temporada, vestidos para galas, graduaciones y eventos corporativos."
+           data-en="Every dress is a unique project. Here are some of our recent works: seasonal collections, gowns for galas, graduations and corporate events.">
+           Cada vestido es un proyecto único. Aquí tienes algunos de nuestros trabajos recientes: colecciones de temporada, vestidos para galas, graduaciones y eventos corporativos.
+        </p>
+    </section>
+
+    <section id="galeria">
+        <h2 data-es="Galerías de fotos" data-en="Photo Gallery">Galerías de fotos</h2>
+        <p data-es="Explora nuestra galería de vestidos de gala reales. Haz clic en cualquier imagen para ampliarla."
+           data-en="Explore our gallery of real evening gowns. Click any image to enlarge it.">
+           Explora nuestra galería de vestidos de gala reales. Haz clic en cualquier imagen para ampliarla.
+        </p>
+        <div class="gallery" id="gallery">
+            <figure><img src="https://images.unsplash.com/photo-1765870973762-8652782b67ac?w=700&q=80&auto=format&fit=crop" alt="Vestido de gala rojo con mangas abullonadas" data-es-alt="Vestido de gala rojo con mangas abullonadas" data-en-alt="Red evening gown with ruffled sleeves"><figcaption data-es="Vestido rojo de gala" data-en="Red evening gown">Vestido rojo de gala</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1788756616372-915b4ddcae81?w=700&q=80&auto=format&fit=crop" alt="Vestido negro brillante" data-es-alt="Vestido negro brillante" data-en-alt="Black glittery evening dress"><figcaption data-es="Vestido negro brillante" data-en="Black glittery dress">Vestido negro brillante</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1765871421597-32d5eaecda42?w=700&q=80&auto=format&fit=crop" alt="Vestido verde esmeralda brillante" data-es-alt="Vestido verde esmeralda brillante" data-en-alt="Sparkling emerald green gown"><figcaption data-es="Vestido verde esmeralda" data-en="Emerald green gown">Vestido verde esmeralda</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1788756616332-afe4993779ed?w=700&q=80&auto=format&fit=crop" alt="Vestido negro con lentejuelas" data-es-alt="Vestido negro con lentejuelas" data-en-alt="Black sequined gown"><figcaption data-es="Vestido con lentejuelas" data-en="Sequined gown">Vestido con lentejuelas</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1765871421201-e06df489fb52?w=700&q=80&auto=format&fit=crop" alt="Vestido azul brillante de noche" data-es-alt="Vestido azul brillante de noche" data-en-alt="Shimmering blue evening gown"><figcaption data-es="Vestido azul de noche" data-en="Blue evening gown">Vestido azul de noche</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1593804497748-06549d718c10?w=700&q=80&auto=format&fit=crop" alt="Vestido rosa de gala" data-es-alt="Vestido rosa de gala" data-en-alt="Pink gala dress"><figcaption data-es="Vestido rosa de gala" data-en="Pink gala dress">Vestido rosa de gala</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1682559963839-5266295fce8d?w=700&q=80&auto=format&fit=crop" alt="Vestido negro de fiesta con abalorios" data-es-alt="Vestido negro de fiesta con abalorios" data-en-alt="Black beaded ball gown"><figcaption data-es="Vestido negro de fiesta" data-en="Black ball gown">Vestido negro de fiesta</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1721069118957-fad5829e2658?w=700&q=80&auto=format&fit=crop" alt="Vestido azul de baile con tiara" data-es-alt="Vestido azul de baile con tiara" data-en-alt="Blue ball gown with tiara"><figcaption data-es="Vestido de baile con tiara" data-en="Ball gown with tiara">Vestido de baile con tiara</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1511556820780-d912e42b4980?w=700&q=80&auto=format&fit=crop" alt="Vestido elegante de noche" data-es-alt="Vestido elegante de noche" data-en-alt="Elegant evening dress"><figcaption data-es="Vestido elegante" data-en="Elegant dress">Vestido elegante</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1644466315919-0cd84f64542b?w=700&q=80&auto=format&fit=crop" alt="Vestido de gala sofisticado" data-es-alt="Vestido de gala sofisticado" data-en-alt="Sophisticated evening gown"><figcaption data-es="Vestido sofisticado" data-en="Sophisticated gown">Vestido sofisticado</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1792333355104-6891e7739172?w=700&q=80&auto=format&fit=crop" alt="Vestido burdeos elegante" data-es-alt="Vestido burdeos elegante" data-en-alt="Elegant burgundy dress"><figcaption data-es="Vestido burdeos" data-en="Burgundy dress">Vestido burdeos</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1791343332157-f067f51e02c0?w=700&q=80&auto=format&fit=crop" alt="Vestido blanco satinado" data-es-alt="Vestido blanco satinado" data-en-alt="White satin dress"><figcaption data-es="Vestido blanco satinado" data-en="White satin dress">Vestido blanco satinado</figcaption></figure>
+        </div>
+    </section>
+
+    <section id="contacto">
+        <h2 data-es="Contáctanos" data-en="Contact Us">Contáctanos</h2>
+        <p data-es="¿Tienes un evento especial en mente? Escríbenos y te ayudaremos a encontrar o crear el vestido perfecto."
+           data-en="Do you have a special event in mind? Write to us and we will help you find or create the perfect dress.">
+           ¿Tienes un evento especial en mente? Escríbenos y te ayudaremos a encontrar o crear el vestido perfecto.
+        </p>
+        <p><strong>Email:</strong> <a href="mailto:info@dianaboutique.com">info@dianaboutique.com</a></p>
+        <div class="contact-actions">
+            <a class="btn-whatsapp wa-link" href="https://wa.me/51987654321" target="_blank" rel="noopener">
+                <svg class="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.71-.84-1.97-.94-.26-.1-.45-.15-.64.15-.19.29-.74.94-.9 1.13-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.76-1.43-1.71-1.6-2-.17-.29-.02-.44.13-.59.13-.13.29-.33.44-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.64-1.54-.87-2.11-.23-.55-.46-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.44s1.03 2.83 1.17 3.02c.15.19 2.02 3.09 4.9 4.33.68.3 1.21.48 1.63.61.68.22 1.3.19 1.79.12.55-.08 1.71-.7 1.95-1.37.24-.67.24-1.25.17-1.37-.07-.12-.26-.19-.55-.34zM12.04 2C6.5 2 2 6.5 2 12.04c0 1.77.46 3.5 1.34 5.02L2 22l5.09-1.34A10 10 0 0 0 12.04 22C17.58 22 22 17.58 22 12.04 22 6.5 17.58 2 12.04 2z"/></svg>
+                <span data-es="Escríbenos por WhatsApp" data-en="Message us on WhatsApp">Escríbenos por WhatsApp</span>
+            </a>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <span data-es="© 2026 Diana Boutique. Todos los derechos reservados." data-en="© 2026 Diana Boutique. All rights reserved.">© 2026 Diana Boutique. Todos los derechos reservados.</span>
+</footer>
+
+<!-- Botón flotante de WhatsApp -->
+<a class="whatsapp-float wa-link" href="https://wa.me/51987654321" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg class="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.71-.84-1.97-.94-.26-.1-.45-.15-.64.15-.19.29-.74.94-.9 1.13-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.76-1.43-1.71-1.6-2-.17-.29-.02-.44.13-.59.13-.13.29-.33.44-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.64-1.54-.87-2.11-.23-.55-.46-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.44s1.03 2.83 1.17 3.02c.15.19 2.02 3.09 4.9 4.33.68.3 1.21.48 1.63.61.68.22 1.3.19 1.79.12.55-.08 1.71-.7 1.95-1.37.24-.67.24-1.25.17-1.37-.07-.12-.26-.19-.55-.34zM12.04 2C6.5 2 2 6.5 2 12.04c0 1.77.46 3.5 1.34 5.02L2 22l5.09-1.34A10 10 0 0 0 12.04 22C17.58 22 22 17.58 22 12.04 22 6.5 17.58 2 12.04 2z"/></svg>
+</a>
+
+<!-- Chatbot bilingüe -->
+<div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat">
+    <div class="chat-header">
+        <div>
+            <strong id="chat-title">Asistente Diana</strong>
+            <small id="chat-status">En línea · responde al instante</small>
+        </div>
+        <button type="button" class="chat-close" id="chat-close" aria-label="Cerrar chat">×</button>
+    </div>
+    <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+    <div class="chat-quick" id="chat-quick"></div>
+    <form class="chat-form" id="chat-form">
+        <input id="chat-input" type="text" autocomplete="off" placeholder="Escribe tu mensaje..." aria-label="Mensaje">
+        <button type="submit" id="chat-send">Enviar</button>
+    </form>
+</div>
+<button type="button" class="chat-toggle" id="chat-toggle" aria-label="Abrir chat" aria-expanded="false">💬</button>
+
+<div id="lightbox" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+    // ==== CAMBIA AQUÍ TU NÚMERO (solo números, con código de país) ====
+    var WHATSAPP_NUMBER = '51987654321';
+    // ================================================================
+
+    var currentLang = 'es';
+
+    var chatTexts = {
+        es: {
+            title: 'Asistente Diana',
+            status: 'En línea · responde al instante',
+            placeholder: 'Escribe tu mensaje...',
+            send: 'Enviar',
+            welcome: '¡Hola! 👋 Soy el asistente virtual de Diana Boutique. ¿En qué puedo ayudarte?',
+            quick: ['Precios', 'Horarios', 'Medidas', 'Alquiler', 'WhatsApp'],
+            changed: 'Idioma cambiado a español. ¿En qué puedo ayudarte?',
+            prices: 'Nuestros precios varían según el diseño y la tela. Escríbenos por WhatsApp para recibir una cotización personalizada. 💌',
+            hours: 'Atendemos de lunes a sábado, de 9:00 a.m. a 7:00 p.m. ¿Quieres agendar una cita?',
+            sizes: 'Trabajamos con medidas personalizadas para un ajuste perfecto. Puedes enviarnos tus medidas por WhatsApp.',
+            rental: 'Sí, contamos con vestidos de gala en alquiler. Pregunta por disponibilidad y fechas por WhatsApp.',
+            contact: 'Puedes escribirnos a info@dianaboutique.com o al WhatsApp que aparece abajo. ¡Estamos listas para ayudarte!',
+            whatsapp: '¡Claro! Abriendo WhatsApp para que hables directamente con nosotras. 😊',
+            fallback: 'Puedo ayudarte con precios, horarios, medidas, alquiler y contacto. También puedes escribirnos por WhatsApp para hablar con una persona.'
+        },
+        en: {
+            title: 'Diana Assistant',
+            status: 'Online · replies instantly',
+            placeholder: 'Type your message...',
+            send: 'Send',
+            welcome: 'Hi! 👋 I am the Diana Boutique virtual assistant. How can I help you?',
+            quick: ['Prices', 'Hours', 'Sizes', 'Rental', 'WhatsApp'],
+            changed: 'Language switched to English. How can I help you?',
+            prices: 'Our prices depend on the design and fabric. Message us on WhatsApp for a personalized quote. 💌',
+            hours: 'We are open Monday to Saturday, 9:00 a.m. to 7:00 p.m. Would you like to book an appointment?',
+            sizes: 'We work with custom measurements for a perfect fit. You can send us your measurements on WhatsApp.',
+            rental: 'Yes, we have evening gowns available for rent. Ask about availability and dates on WhatsApp.',
+            contact: 'You can email info@dianaboutique.com or use the WhatsApp button below. We are ready to help!',
+            whatsapp: 'Sure! Opening WhatsApp so you can talk to us directly. 😊',
+            fallback: 'I can help with prices, hours, sizes, rental and contact. You can also message us on WhatsApp to speak with a person.'
+        }
+    };
+
+    function waUrl(message) {
+        var msg = message || (currentLang === 'en'
+            ? 'Hello! I would like information about your evening dresses.'
+            : '¡Hola! Quisiera información sobre sus vestidos de gala.');
+        return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+    }
+
+    function refreshWaLinks() {
+        document.querySelectorAll('.wa-link').forEach(function (a) { a.href = waUrl(); });
+    }
+
+    function openWhatsApp() {
+        window.open(waUrl(), '_blank', 'noopener');
+    }
+
+    function addMessage(text, who) {
+        var box = document.getElementById('chat-messages');
+        var div = document.createElement('div');
+        div.className = 'chat-msg ' + (who === 'user' ? 'user' : 'bot');
+        div.textContent = text;
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function renderQuick() {
+        var wrap = document.getElementById('chat-quick');
+        wrap.innerHTML = '';
+        chatTexts[currentLang].quick.forEach(function (label) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = label;
+            b.addEventListener('click', function () { sendMessage(label); });
+            wrap.appendChild(b);
+        });
+    }
+
+    function botReply(text) {
+        var t = ' ' + text.toLowerCase() + ' ';
+        var T = chatTexts[currentLang];
+        var has = function (words) {
+            return words.some(function (w) { return t.indexOf(w) !== -1; });
+        };
+        if (has(['precio', 'precios', 'cuesta', 'coste', 'cuánto', 'cuanto', 'price', 'prices', 'cost', 'how much'])) return T.prices;
+        if (has(['horario', 'horarios', 'hora', 'abierto', 'cerrado', 'atencion', 'atención', 'hours', 'open', 'closed', 'schedule', 'when'])) return T.hours;
+        if (has(['medida', 'medidas', 'talla', 'tallas', 'ajuste', 'tamaño', 'size', 'sizes', 'measurement', 'fit'])) return T.sizes;
+        if (has(['alquiler', 'alquila', 'alquilan', 'rentar', 'rental', 'rent', 'hire'])) return T.rental;
+        if (has(['contacto', 'contactar', 'telefono', 'teléfono', 'correo', 'email', 'direccion', 'dirección', 'ubicacion', 'ubicación', 'contact', 'phone', 'address', 'location', 'where'])) return T.contact;
+        if (has(['whatsapp', 'whats', 'wpp', 'hablar', 'persona', 'humano', 'agente', 'agent', 'human', 'talk'])) {
+            openWhatsApp();
+            return T.whatsapp;
+        }
+        return T.fallback;
+    }
+
+    function sendMessage(text) {
+        var value = (text || document.getElementById('chat-input').value).trim();
+        if (!value) return;
+        addMessage(value, 'user');
+        document.getElementById('chat-input').value = '';
+        window.setTimeout(function () { addMessage(botReply(value), 'bot'); }, 450);
+    }
+
+    function setLanguage(lang, quiet) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'Diana Boutique - Evening Dresses'
+            : 'Diana Boutique - Vestidos de Gala';
+
+        // Translate all elements carrying data-es / data-en
+        document.querySelectorAll('[data-es]').forEach(function (el) {
+            el.textContent = lang === 'en' ? el.dataset.en : el.dataset.es;
+        });
+        // Translate image alternative texts
+        document.querySelectorAll('[data-es-alt]').forEach(function (el) {
+            el.alt = lang === 'en' ? el.dataset.enAlt : el.dataset.esAlt;
+        });
+        // Highlight the active language button
+        document.querySelectorAll('.lang-selector button').forEach(function (btn) {
+            btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+        });
+
+        // WhatsApp links with a message in the selected language
+        refreshWaLinks();
+
+        // Chatbot interface
+        var T = chatTexts[lang];
+        document.getElementById('chat-title').textContent = T.title;
+        document.getElementById('chat-status').textContent = T.status;
+        document.getElementById('chat-input').placeholder = T.placeholder;
+        document.getElementById('chat-send').textContent = T.send;
+        renderQuick();
+        if (!quiet) addMessage(T.changed, 'bot');
+    }
+
+    // Chatbot events
+    document.getElementById('chat-toggle').addEventListener('click', function () {
+        var panel = document.getElementById('chat-panel');
+        var open = panel.classList.toggle('open');
+        this.textContent = open ? '×' : '💬';
+        this.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) document.getElementById('chat-input').focus();
+    });
+    document.getElementById('chat-close').addEventListener('click', function () {
+        document.getElementById('chat-panel').classList.remove('open');
+        var toggle = document.getElementById('chat-toggle');
+        toggle.textContent = '💬';
+        toggle.setAttribute('aria-expanded', 'false');
+    });
+    document.getElementById('chat-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        sendMessage();
+    });
+
+    // Gallery lightbox
+    document.querySelectorAll('.gallery img').forEach(function (img) {
+        img.addEventListener('click', function () {
+            var box = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = this.src.replace('w=700', 'w=1400');
+            document.getElementById('lightbox-img').alt = this.alt;
+            box.style.display = 'flex';
+        });
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            document.getElementById('lightbox').style.display = 'none';
+            document.getElementById('chat-panel').classList.remove('open');
+            document.getElementById('chat-toggle').textContent = '💬';
+        }
+    });
+
+    // Init
+    setLanguage('es', true);
+    addMessage(chatTexts[currentLang].welcome, 'bot');
+</script>
+</body>
+</html>
